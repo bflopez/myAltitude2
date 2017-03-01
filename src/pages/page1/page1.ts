@@ -1,7 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {NavController} from 'ionic-angular';
 import {GeolocationService} from '../../services/location.service'
-import {Altitude} from "../../Altitude";
 
 @Component({
   selector: 'page-page1',
@@ -9,7 +8,14 @@ import {Altitude} from "../../Altitude";
 })
 export class Page1 implements OnInit {
 
-  altitude: Altitude;
+  lat: number;
+  long: number;
+  latitudeDir: string;
+  longitudeDir: string;
+  locAccuracy: number;
+  altitude: number;
+  altitudeAccuracy: number;
+  timestamp: number;
 
   measurementType: string;
   message: string;
@@ -21,8 +27,27 @@ export class Page1 implements OnInit {
   getLocation() {
     this.geolocation.getCurrentPosition().forEach(
       // Next.
-      (altitude: Altitude) => {
-        this.altitude = altitude;
+      (position: Position) => {
+        let lat = this.geolocation.round(position.coords.latitude, 5);
+        let long = this.geolocation.round(position.coords.longitude, 5);
+
+        if (lat < 0) {
+          this.latitudeDir = 'S';
+        } else {
+          this.latitudeDir = 'N'
+        }
+        if (long < 0) {
+          this.longitudeDir = 'W';
+        } else {
+          this.longitudeDir = 'E'
+        }
+
+        this.lat = Math.abs(lat);
+        this.long = Math.abs(long);
+        this.locAccuracy = this.geolocation.metersToFeet(position.coords.accuracy);
+        this.altitude = this.geolocation.metersToFeet(position.coords.altitude);
+        this.altitudeAccuracy = this.geolocation.metersToFeet(position.coords.altitudeAccuracy);
+        this.timestamp = position.timestamp;
       }, null
     )
       .then(() => console.log('Geolocation service: completed.'))
