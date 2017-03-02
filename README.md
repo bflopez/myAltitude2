@@ -1,6 +1,5 @@
-# ngAltitude-attempt-2
+# ngAltitude2
 
-[NOT WORKING] 
 Using a Service that returns an Observable of a promise which is then modified in the component.
 
 Playing around with observable from a promise as a service
@@ -14,7 +13,7 @@ Playing around with observable from a promise as a service
 ### Start Ionic
 
 ```
-cd ngAltitude-attempt-2
+cd ngAltitude2
 ionic serve
 ```
 
